@@ -7,12 +7,10 @@ const salt = 10;
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
-
-  if (!('email' in body) || !('password' in body))
-    return NextResponse.json(
-      { error: 'Body missing \'email\' or \'password\' fields' }, 
-      { status: 400 }
-    );
+  if (!('email' in body) || !('password' in body)) return NextResponse.json(
+    { error: 'Body missing \'email\' or \'password\' fields' }, 
+    { status: 400 }
+  );
 
   const user = await prisma.user.findUnique({
     where: { email: body.email }
@@ -23,7 +21,6 @@ export async function POST(req: NextRequest) {
   );
 
   const hashed = await bcrypt.hash(body.password, salt);
-
   const record = await prisma.user.create({
     data: {
       email: body.email,
