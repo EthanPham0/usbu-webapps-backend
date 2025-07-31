@@ -1,0 +1,17 @@
+POST http://localhost:3000/api/signup
+Content-Type: application/json
+
+{
+    "email": "johndoe@email.com",
+    "password": "password"
+}
+
+###
+
+POST http://localhost:3000/api/login
+Content-Type: application/json
+
+{
+    "email": "",
+    "password": "",
+}
