@@ -35,7 +35,7 @@ model App {
 model Frequency {
   userEmail     String          @map("user_email")
   appId         Int             @map("app_id")
-  frequency     Int
+  frequency     Int             @default(1)
 
   user          User            @relation("user", fields: [userEmail], references: [email])
   app           App             @relation("app", fields: [appId], references: [id])

@@ -12,14 +12,12 @@ export async function POST(req: NextRequest) {
     { status: 500 }
   );
 
-  const body = await req.json();
-
   const authHeader = req.headers.get('Authorization');
   if (authHeader !== null && authHeader.startsWith('Bearer '))
   {
     const token = authHeader.substring(7);
     try {
-      const decoded = jwt.verify(token, secret!);
+      jwt.verify(token, secret!);
       return NextResponse.json(
         { token: token },
         { status: 200 }
@@ -32,6 +30,7 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  const body = await req.json();
   if (!('email' in body) || !('password' in body)) return NextResponse.json(
     { error: 'Body missing \'email\' or \'password\' fields' },
     { status: 400 }
