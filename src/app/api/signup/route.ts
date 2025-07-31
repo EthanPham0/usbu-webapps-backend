@@ -1,11 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 const prisma = new PrismaClient();
 const salt = 10;
 
 export async function POST(req: NextRequest) {
+  const secret = process.env.JWT_SECRET;
+  if (secret === null) return NextResponse.json(
+    { error: 'JWT auth not configured' },
+    { status: 500 }
+  );
+
   const body = await req.json();
   if (!('email' in body) || !('password' in body)) return NextResponse.json(
     { error: 'Body missing \'email\' or \'password\' fields' }, 
@@ -28,5 +35,10 @@ export async function POST(req: NextRequest) {
     }
   });
 
-  return NextResponse.json(record, { status: 201 });
+  const token = jwt.sign(record, secret!, { expiresIn: '1d' });
+
+  return NextResponse.json(
+    { token: token },
+    { status: 201 }
+  );
 }

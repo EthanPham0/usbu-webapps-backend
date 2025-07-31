@@ -2,7 +2,7 @@ POST http://localhost:3000/api/signup
 Content-Type: application/json
 
 {
-    "email": "johndoe@email.com",
+    "email": "janedoe@email.com",
     "password": "password"
 }
 
@@ -10,7 +10,7 @@ Content-Type: application/json
 
 POST http://localhost:3000/api/login
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvaG5kb2VAZW1haWwuY29tIiwicGFzc3dvcmQiOiIkMmIkMTAkNjRVYmZFbkx5cHVSSW1HUlR6SHVNLmRCSmU3M1BuYVJBT2JpNmlBUERzQldaNjYyY2hZd3UiLCJpYXQiOjE3NTM5ODg2NjIsImV4cCI6MTc1Mzk4ODY2M30.mPJ_vHwNhF1PpGA6p9GMrkhmjGDio7xYgWq5XVRJubk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImphbmVkb2VAZW1haWwuY29tIiwicGFzc3dvcmQiOiIkMmIkMTAkalVXcVNRak1ISHFXcVpDaWZ3Z3VqdXJpRE9sUWtVS1NjMDFZRTVEREdjdUYyLnhuU2VFRGEiLCJpYXQiOjE3NTM5ODg5NjMsImV4cCI6MTc1NDA3NTM2M30.BqkyzYTvC9lEFU8lkUrmzuSL-HGmcwo6xjgVTGJL40E
 
 {
     
