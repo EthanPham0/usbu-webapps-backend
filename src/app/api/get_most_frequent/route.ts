@@ -1,35 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
-import jwt from 'jsonwebtoken';
 
-import { Payload } from '@/types/payload';
+import { validateToken } from '@/middleware/authValidation';
+import { MissingJWTSecretError, InvalidTokenError } from '@/types/AuthErrors';
 
 const prisma = new PrismaClient();
 
 export async function GET(req: NextRequest) {
-  const secret = process.env.JWT_SECRET;
-  if (secret === null) return NextResponse.json(
-    { error: 'JWT auth not configured' },
-    { status: 500 }
-  );
-
-  const authHeader = req.headers.get('Authorization');
-  console.log(authHeader);
-  if (authHeader === null || !authHeader.startsWith('Bearer ')) return NextResponse.json(
-    { error: 'Invalid token' },
-    { status: 401 }
-  );
-
-  const token = authHeader.substring(7);
   let decoded;
-  try {
-    decoded = jwt.verify(token, secret!) as Payload;
-  } catch (err) {
-    return NextResponse.json(
-      { error: 'Invalid token' },
-      { status: 401 }
-    );
-  }
+    try {
+      decoded = validateToken(req);
+    } catch (err) {
+      if (err instanceof MissingJWTSecretError) return NextResponse.json(
+        { error: 'JWT auth not set up' },
+        { status: 500 }
+      );
+      else if (err instanceof InvalidTokenError) return NextResponse.json(
+        { error: 'Invalid token' },
+        { status: 401 }
+      );
+      else return NextResponse.json(
+        { error: 'Unexpected error occured' },
+        { status: 500 }
+      );
+    }
 
   const mostFrequent = await prisma.frequency.findMany({
     where: { userEmail: decoded.email },
